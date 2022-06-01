@@ -35,6 +35,30 @@ class gridGame
         }
     }
 
+    // finishGame()
+    // {
+    //
+    // }
+
+    increaseTimer(isPlaying)
+    {
+        let min = 0;
+        let sec = 0;
+        let timers = setInterval(() => {
+            console.log(this.timer);
+            this.timer.innerHTML = min.toString()+':'+sec.toString();
+            if (sec === 60) {
+                min++;
+                sec = 0;
+                console.log(isPlaying);
+                if (isPlaying === false) {
+                    clearInterval(timers);
+                }
+            }
+            sec++;
+        }, 1000);
+    }
+
     createGrid()
     {
         let gridSize = 0;
@@ -48,6 +72,7 @@ class gridGame
 
         for (let i = 0; i < gridSize; i++) {
             let row = document.createElement("tr");
+            row.classList.add("row");
             this.grid.appendChild(row);
             for (let j = 0; j < gridSize; j++) {
                 let cell = document.createElement("td");
@@ -61,13 +86,41 @@ class gridGame
 
 }
 
+let start = document.querySelector(".start");
+let startBtn = document.querySelector("#start-btn");
+let reset = document.querySelector(".reset");
+let resetBtn = document.querySelector("#reset-btn");
 let grid = document.querySelector("#grid-table");
+let timer = document.querySelector(".timer");
+let inGame = document.querySelector(".in-game");
 
-let game = new gridGame(grid, 0, 0, 0, 1, 0, 0, 0);
-game.createGrid();
+let isPlaying = false;
 
-let isClicking = false;
 
-game.cells.forEach(cell => {
-    game.colorCell(cell);
+startBtn.addEventListener("click", () => {
+    isPlaying = true;
+    inGame.classList.remove("hide");
+    start.classList.add("hide");
+
+
+    let game = new gridGame(grid, 0, 0, 0, 1, timer, 0, 0);
+    game.createGrid();
+    game.increaseTimer(isPlaying);
 });
+
+resetBtn.addEventListener("click", () => {
+    isPlaying = false;
+    inGame.classList.add("hide");
+    start.classList.remove("hide");
+
+    let cells = document.querySelectorAll(".row");
+    cells.forEach(cell => {
+        cell.remove();
+    });
+});
+
+// let isClicking = false;
+//
+// game.cells.forEach(cell => {
+//     game.colorCell(cell);
+// });

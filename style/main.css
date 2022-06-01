@@ -6,6 +6,19 @@ html, body {
     background-color: #eaeaea;
 }
 
+.hide {
+    display: none;
+}
+
+#start-btn {
+    padding: 1vh;
+    background-color: #2d8924;
+}
+
+#start-btn, #reset-btn {
+    cursor: pointer;
+}
+
 #grid-table {
     border: 2px solid #000000;
     border-spacing: 0;
