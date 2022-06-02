@@ -40,23 +40,26 @@ class gridGame
     //
     // }
 
-    increaseTimer(isPlaying)
+    increaseTimer()
     {
         let min = 0;
-        let sec = 0;
+        let sec = 1;
+        this.timer.innerHTML = min.toString()+':0';
         let timers = setInterval(() => {
             console.log(this.timer);
-            this.timer.innerHTML = min.toString()+':'+sec.toString();
             if (sec === 60) {
                 min++;
                 sec = 0;
-                console.log(isPlaying);
-                if (isPlaying === false) {
-                    clearInterval(timers);
-                }
             }
+            this.timer.innerHTML = min.toString()+':'+sec.toString();
             sec++;
         }, 1000);
+        return timers;
+    }
+
+    stopTimer(timers)
+    {
+        clearInterval(timers);
     }
 
     createGrid()
@@ -93,8 +96,10 @@ let resetBtn = document.querySelector("#reset-btn");
 let grid = document.querySelector("#grid-table");
 let timer = document.querySelector(".timer");
 let inGame = document.querySelector(".in-game");
+let game = new gridGame(grid, 0, 0, 0, 1, timer, 0, 0);
 
 let isPlaying = false;
+let interval;
 
 
 startBtn.addEventListener("click", () => {
@@ -103,9 +108,8 @@ startBtn.addEventListener("click", () => {
     start.classList.add("hide");
 
 
-    let game = new gridGame(grid, 0, 0, 0, 1, timer, 0, 0);
     game.createGrid();
-    game.increaseTimer(isPlaying);
+    interval = game.increaseTimer();
 });
 
 resetBtn.addEventListener("click", () => {
@@ -117,6 +121,7 @@ resetBtn.addEventListener("click", () => {
     cells.forEach(cell => {
         cell.remove();
     });
+    game.stopTimer(interval);
 });
 
 // let isClicking = false;
