@@ -93,6 +93,9 @@ let start = document.querySelector(".start");
 let startBtn = document.querySelector("#start-btn");
 //let reset = document.querySelector(".reset");
 let resetBtn = document.querySelector("#reset-btn");
+let inputNameContainer = document.querySelector(".input-name");
+let inputName = document.querySelector("#input-name");
+let inputNameBtn = document.querySelector("#name-btn");
 let grid = document.querySelector("#grid-table");
 let timer = document.querySelector(".timer");
 let inGame = document.querySelector(".in-game");
@@ -105,12 +108,23 @@ let interval;
 
 startBtn.addEventListener("click", () => {
     //isPlaying = true;
-    inGame.classList.remove("hide");
+    inputNameContainer.classList.remove("hide");
     start.classList.add("hide");
+});
 
+inputNameBtn.addEventListener("click", () => {
+    if ((inputName.value !== "") && (inputName.value.length <= 14)) {
+        game.name = inputName.value;
+        inputName.value = "";
 
-    game.createGrid();
-    interval = game.increaseTimer();
+        inGame.classList.remove("hide");
+        inputNameContainer.classList.add("hide");
+
+        game.createGrid();
+        interval = game.increaseTimer();
+    } else {
+        alert("Please enter a valid name");
+    }
 });
 
 resetBtn.addEventListener("click", () => {
