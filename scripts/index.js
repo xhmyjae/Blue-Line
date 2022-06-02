@@ -46,7 +46,6 @@ class gridGame
         let sec = 1;
         this.timer.innerHTML = min.toString()+':0';
         let timers = setInterval(() => {
-            console.log(this.timer);
             if (sec === 60) {
                 min++;
                 sec = 0;
@@ -89,21 +88,23 @@ class gridGame
 
 }
 
+
 let start = document.querySelector(".start");
 let startBtn = document.querySelector("#start-btn");
-let reset = document.querySelector(".reset");
+//let reset = document.querySelector(".reset");
 let resetBtn = document.querySelector("#reset-btn");
 let grid = document.querySelector("#grid-table");
 let timer = document.querySelector(".timer");
 let inGame = document.querySelector(".in-game");
+
 let game = new gridGame(grid, 0, 0, 0, 1, timer, 0, 0);
 
-let isPlaying = false;
+//let isPlaying = false;
 let interval;
 
 
 startBtn.addEventListener("click", () => {
-    isPlaying = true;
+    //isPlaying = true;
     inGame.classList.remove("hide");
     start.classList.add("hide");
 
@@ -113,7 +114,7 @@ startBtn.addEventListener("click", () => {
 });
 
 resetBtn.addEventListener("click", () => {
-    isPlaying = false;
+    //isPlaying = false;
     inGame.classList.add("hide");
     start.classList.remove("hide");
 
@@ -121,6 +122,7 @@ resetBtn.addEventListener("click", () => {
     cells.forEach(cell => {
         cell.remove();
     });
+
     game.stopTimer(interval);
 });
 
