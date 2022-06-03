@@ -21,24 +21,54 @@ class gridGame
 
     }
 
-    colorCell(cell)
-    {
-        if (isClicking) {
-            cell.addEventListener("mousemove", () => {
-                cell.style.backgroundColor = "#FD6C6C";
-                isClicking = true;
-            });
-        } else {
-            cell.addEventListener("mousedown", () => {
-                cell.style.backgroundColor = "#FD6C6C";
-            });
-        }
-    }
+    // colorCell(cell)
+    // {
+    //     if (isClicking) {
+    //         cell.addEventListener("mousemove", () => {
+    //             cell.style.backgroundColor = "#FD6C6C";
+    //             isClicking = true;
+    //         });
+    //     } else {
+    //         cell.addEventListener("mousedown", () => {
+    //             cell.style.backgroundColor = "#FD6C6C";
+    //         });
+    //     }
+    // }
 
     // finishGame()
     // {
     //
     // }
+
+    addToScoreboard()
+    {
+        // Add the player and its timer to the scoreboard in local storage
+        let scoreboard = JSON.parse(localStorage.getItem("scoreboard"));
+        if (scoreboard === null) {
+            scoreboard = [];
+        }
+        scoreboard.push({
+            name: this.name,
+            time: this.timer.innerHTML
+        });
+        console.log(scoreboard);
+
+        // sort scoreboard based on time and get the top 5 in a new variable
+        let topFive = scoreboard.sort((a, b) => {
+            return a.time - b.time;
+        }).slice(0, 5);
+
+        console.log(topFive);
+
+        // save the scoreboard in local storage
+        localStorage.setItem("scoreboard", JSON.stringify(topFive));
+
+        // update the scoreboard
+        this.scoreboard.innerHTML = "";
+        scoreboard.forEach(player => {
+            this.scoreboard.innerHTML += `<span class="challenger-name">${player.name} : ${player.time}</span>`;
+        });
+    }
 
     increaseTimer()
     {
@@ -99,8 +129,9 @@ let inputNameBtn = document.querySelector("#name-btn");
 let grid = document.querySelector("#grid-table");
 let timer = document.querySelector(".timer");
 let inGame = document.querySelector(".in-game");
+let scoreBoardChallengers = document.querySelector(".score-board-challengers");
 
-let game = new gridGame(grid, 0, 0, 0, 1, timer, 0, 0);
+let game = new gridGame(grid, 0, 0, 0, 1, timer, 0, scoreBoardChallengers);
 
 //let isPlaying = false;
 let interval;
@@ -138,7 +169,19 @@ resetBtn.addEventListener("click", () => {
     });
 
     game.stopTimer(interval);
+    game.addToScoreboard();
 });
+
+window.onload = function() {
+    // add scoreboard in local storage to the page
+    let scoreboard = localStorage.getItem("scoreboard");
+    if (scoreboard !== null) {
+        scoreboard = JSON.parse(scoreboard);
+        scoreboard.forEach(player => {
+            game.scoreboard.innerHTML += `<span class="challenger-name">${player.name} : ${player.time}</span>`;
+        });
+    }
+}
 
 // let isClicking = false;
 //
