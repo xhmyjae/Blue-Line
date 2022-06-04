@@ -15,10 +15,26 @@ class gridGame
 
     randomPath()
     {
-        // Generate a random path and return it
+        // Randomly generate a path for the player to follow
         let path = [];
-        let pathLength = Math.floor(this.cells / 3 + this.level + 1);
-
+        let pathLength = this.cells.length / 3;
+        console.log(pathLength);
+        // the cells must be neighbours to each other
+        for (let i = 0; i < pathLength; i++)
+        {
+            let randomCell = Math.floor(Math.random() * this.cells.length);
+            while (path.includes(randomCell))
+            {
+                randomCell = Math.floor(Math.random() * this.cells.length);
+            }
+            path.push(randomCell);
+        }
+        path.forEach(cell =>
+        {
+            this.cells[cell].classList.add("path");
+        });
+        console.log(path);
+        return path;
     }
 
     // colorCell(cell)
@@ -130,8 +146,9 @@ let grid = document.querySelector("#grid-table");
 let timer = document.querySelector(".timer");
 let inGame = document.querySelector(".in-game");
 let scoreBoardChallengers = document.querySelector(".score-board-challengers");
+let cells = document.querySelectorAll(".cell");
 
-let game = new gridGame(grid, 0, 0, 0, 1, timer, 0, scoreBoardChallengers);
+let game = new gridGame(grid, cells, 0, 1, 1, timer, 0, scoreBoardChallengers);
 
 //let isPlaying = false;
 let interval;
@@ -152,6 +169,7 @@ inputNameBtn.addEventListener("click", () => {
         inputNameContainer.classList.add("hide");
 
         game.createGrid();
+        game.randomPath();
         interval = game.increaseTimer();
     } else {
         alert("Please enter a valid name");
@@ -169,7 +187,6 @@ resetBtn.addEventListener("click", () => {
     });
 
     game.stopTimer(interval);
-    game.addToScoreboard();
 });
 
 window.onload = function() {
