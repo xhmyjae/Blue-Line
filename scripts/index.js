@@ -55,8 +55,8 @@ class gridGame
 
         // sort scoreboard based on time and get the top 5 in a new variable
         let topFive = scoreboard.sort((a, b) => {
-            return a.time - b.time;
-        }).slice(0, 5);
+            return a.time.split(":")[1] - b.time.split(":")[1];
+        }).slice(0, 4);
 
         console.log(topFive);
 
